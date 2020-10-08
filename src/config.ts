@@ -1,9 +1,4 @@
-interface ServiceConfigInterface {
-    jwt: {
-        refreshSecret: string;
-        accessSecret: string;
-    };
-}
+import ServiceConfigInterface from './interfaces/service.config.interface';
 
 export const serviceConfig: ServiceConfigInterface = {
     jwt: {

@@ -5,6 +5,7 @@ import AppController from './app.controller';
 import AppService from './app.service';
 import PostsModule from './posts/post.module';
 import UserModule from './users/user.module';
+import CommentModule from './comments/comment.module';
 import Post from './posts/entities/post';
 import { User } from './users/user.entitie';
 
@@ -12,6 +13,7 @@ import { User } from './users/user.entitie';
     imports: [
         PostsModule,
         UserModule,
+        CommentModule,
         TypeOrmModule.forRoot({
             type: 'mysql',
             host: 'localhost',
@@ -19,7 +21,7 @@ import { User } from './users/user.entitie';
             username: 'root',
             password: 'Bandapixels1!',
             database: 'blog2',
-            entities: [Post, User],
+            entities: [Post, User, Comment],
             synchronize: true,
         }),
     ],
