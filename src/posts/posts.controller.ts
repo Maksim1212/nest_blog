@@ -17,7 +17,7 @@ const errorMessage = 'wrong token';
 const forbiddenMessage = 'you are do not have permissions to perform this operation';
 
 @Controller('posts')
-export default class PostsController {
+export default class PostController {
     constructor(
         private readonly postService: PostService,
         private readonly jwtChecker: JWTCheckerInterface,

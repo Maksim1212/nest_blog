@@ -30,7 +30,7 @@ export default class PostService {
         return this.postsRepository.find({ author_id: id });
     }
 
-    updatePostById(id: number, body: LikesDataInterface): Promise<UpdateResult> {
+    updatePostById(id: number, body: any): Promise<UpdateResult> {
         return this.postsRepository.update(id, body);
     }
 
