@@ -1,11 +1,13 @@
 import * as jwt from 'jsonwebtoken';
-
 import JWTCheckerInterface from 'src/interfaces/jwt.checker.interface';
+import { Injectable } from '@nestjs/common';
+
 import getJWTTokens from '../users/helpers/get.jwt.tokens';
 import { TokensInterface } from '../users/interfaces/user.model.interface';
 import { serviceConfig } from '../config';
 import UserService from '../users/user.service';
 
+@Injectable()
 export default class JWTChecker implements JWTCheckerInterface {
     constructor(private readonly userService: UserService) {}
 

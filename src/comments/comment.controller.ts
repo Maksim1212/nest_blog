@@ -15,11 +15,11 @@ const errorMessage = 'wrong token';
 const forbiddenMessage = 'you are do not have permissions to perform this operation';
 
 @Controller('comments')
-export default class PostsController {
+export default class CommentController {
     constructor(
         private readonly commentService: CommentService,
-        private readonly jwtChecker: JWTCheckerInterface,
-        private readonly permissionChecker: PermissionCheckerInterface,
+        // private readonly jwtChecker: JWTCheckerInterface,
+        // private readonly permissionChecker: PermissionCheckerInterface,
     ) {}
 
     @Get('/')
@@ -28,18 +28,18 @@ export default class PostsController {
         return res.status(200).json(comments);
     }
 
-    @Post('/create')
-    private async create(@Body() newComment: DeepPartial<CreateCommentDto>, @Res() res: Response): Promise<Response> {
-        await validateOrReject(new CreateCommentDto(newComment));
-        const isAuth = await this.jwtChecker.isAuthJWT(newComment.accessToken);
-        if (isAuth) {
-            await this.commentService.create(newComment);
-            return res.status(200).json({
-                message: 'comment added successfully',
-            });
-        }
-        return res.status(401).json(errorMessage);
-    }
+    // @Post('/create')
+    // private async create(@Body() newComment: DeepPartial<CreateCommentDto>, @Res() res: Response): Promise<Response> {
+    //     await validateOrReject(new CreateCommentDto(newComment));
+    //     const isAuth = await this.jwtChecker.isAuthJWT(newComment.accessToken);
+    //     if (isAuth) {
+    //         await this.commentService.create(newComment);
+    //         return res.status(200).json({
+    //             message: 'comment added successfully',
+    //         });
+    //     }
+    //     return res.status(401).json(errorMessage);
+    // }
 
     @Get('/:id')
     private async findByPostId(@Query('id') id: number, @Res() res: Response): Promise<Response> {
@@ -66,30 +66,30 @@ export default class PostsController {
         }
 
         return res.status(200).json({
-            message: 'you have already liked this post',
+            message: 'you have already liked this comment',
         });
     }
 
-    @Delete('/')
-    private async deleteById(
-        @Body() deleteComment: DeepPartial<DeleteCommentDto>,
-        @Res() res: Response,
-    ): Promise<Response> {
-        const isAuth = await this.jwtChecker.isAuthJWT(deleteComment.accessToken);
-        if (!isAuth) {
-            return res.status(401).json(errorMessage);
-        }
-        const comment = await this.commentService.findOrfail(deleteComment.id);
+    // @Delete('/')
+    // private async deleteById(
+    //     @Body() deleteComment: DeepPartial<DeleteCommentDto>,
+    //     @Res() res: Response,
+    // ): Promise<Response> {
+    //     const isAuth = await this.jwtChecker.isAuthJWT(deleteComment.accessToken);
+    //     if (!isAuth) {
+    //         return res.status(401).json(errorMessage);
+    //     }
+    //     const comment = await this.commentService.findOrfail(deleteComment.id);
 
-        const isAdmin = await this.permissionChecker.isAdmin(deleteComment.user_id);
+    //     const isAdmin = await this.permissionChecker.isAdmin(deleteComment.user_id);
 
-        if (isAdmin || comment.author_id === deleteComment.user_id) {
-            await this.commentService.deleteById(deleteComment.id);
-            return res.status(200).json({
-                message: 'comment deleted successfully',
-            });
-        }
+    //     if (isAdmin || comment.author_id === deleteComment.user_id) {
+    //         await this.commentService.deleteById(deleteComment.id);
+    //         return res.status(200).json({
+    //             message: 'comment deleted successfully',
+    //         });
+    //     }
 
-        return res.status(403).json(forbiddenMessage);
-    }
+    //     return res.status(403).json(forbiddenMessage);
+    // }
 }

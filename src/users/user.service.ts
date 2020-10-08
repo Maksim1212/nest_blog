@@ -3,12 +3,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateResult, Repository } from 'typeorm';
 import { QueryDeepPartialEntity } from 'typeorm/query-builder/QueryPartialEntity';
 
-import { User } from './user.entitie';
+import { User } from './user.entity';
 import { UpdateDataInterface } from './interfaces/user.model.interface';
 import { OneUserInterface, CreateUserDataInterface } from './interfaces/user.service.interface';
 
 @Injectable()
-export default class PostService {
+export default class UserService {
     constructor(
         @InjectRepository(User)
         private usersRepository: Repository<User>,

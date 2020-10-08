@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import { getRepository } from 'typeorm';
-import { User } from '../user.entitie';
+import { User } from '../user.entity';
 import { serviceConfig } from '../../config';
 import { TokensInterface } from '../interfaces/user.model.interface';
 

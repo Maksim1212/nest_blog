@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, UpdateResult, Repository } from 'typeorm';
 
-import Comment from './comment.entitie';
+import Comment from './comment.entity';
 import {
     AllCommentsInterface,
     CommentDataInterface,
@@ -11,7 +11,7 @@ import {
 import LikesInterface from './interfaces/likes.interface';
 
 @Injectable()
-export default class PostService {
+export default class CommentService {
     constructor(
         @InjectRepository(Comment)
         private commentsRepository: Repository<Comment>,

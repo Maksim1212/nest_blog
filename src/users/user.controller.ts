@@ -5,7 +5,7 @@ import { validateOrReject } from 'class-validator';
 import { DeepPartial } from 'typeorm';
 
 import UserService from './user.service';
-import { getUserMainFields } from './user.entitie';
+import { getUserMainFields } from './user.entity';
 import { PasswordInterface, UpdateDataInterface } from './interfaces/user.model.interface';
 import CreateUserDto from './dto/create.user.dto';
 import LoginUserDto from './dto/login.user.dto';

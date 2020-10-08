@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { Body, Controller, Delete, Get, Post, Put, Query, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, NestMiddleware, NestModule, Post, Put, Query, Res } from '@nestjs/common';
 import { validateOrReject } from 'class-validator';
 import { DeepPartial } from 'typeorm';
 
@@ -16,12 +16,13 @@ import SortPostDto from './dto/sort.post.dto';
 const errorMessage = 'wrong token';
 const forbiddenMessage = 'you are do not have permissions to perform this operation';
 
-@Controller('posts')
+@Controller('/posts')
 export default class PostController {
     constructor(
         private readonly postService: PostService,
-        private readonly jwtChecker: JWTCheckerInterface,
-        private readonly permissionChecker: PermissionCheckerInterface,
+        // private readonly permissionChecker: NestMiddleware,
+        // @Inject(JWTCheckerInterface) private readonly jwtChecker: JWTCheckerInterface,
+        // private readonly permissionChecker: PermissionCheckerInterface,
     ) {}
 
     @Get()
@@ -49,53 +50,53 @@ export default class PostController {
         return res.status(200).json(posts);
     }
 
-    @Put('/update')
-    private async updateById(@Body() updatePost: DeepPartial<UpdatePostDto>, @Res() res: Response): Promise<Response> {
-        await validateOrReject(new UpdatePostDto(updatePost));
-        const isAuth = await this.jwtChecker.isAuthJWT(updatePost.accessToken);
-        if (!isAuth) {
-            return res.status(401).json(errorMessage);
-        }
+    // @Put('/update')
+    // private async updateById(@Body() updatePost: DeepPartial<UpdatePostDto>, @Res() res: Response): Promise<Response> {
+    //     await validateOrReject(new UpdatePostDto(updatePost));
+    //     const isAuth = await this.jwtChecker.isAuthJWT(updatePost.accessToken);
+    //     if (!isAuth) {
+    //         return res.status(401).json(errorMessage);
+    //     }
 
-        const post = await this.postService.findOrfail(updatePost.id);
+    //     const post = await this.postService.findOrfail(updatePost.id);
 
-        const isAdmin = await this.permissionChecker.isAdmin(updatePost.author_id);
+    //     const isAdmin = await this.permissionChecker.isAdmin(updatePost.author_id);
 
-        if (isAdmin || post.author_id === updatePost.author_id) {
-            const postData = {
-                body: updatePost.body,
-                title: updatePost.title,
-            };
-            await this.postService.updatePostById(updatePost.id, postData);
-            return res.status(200).json({
-                message: 'post updated successfully',
-            });
-        }
+    //     if (isAdmin || post.author_id === updatePost.author_id) {
+    //         const postData = {
+    //             body: updatePost.body,
+    //             title: updatePost.title,
+    //         };
+    //         await this.postService.updatePostById(updatePost.id, postData);
+    //         return res.status(200).json({
+    //             message: 'post updated successfully',
+    //         });
+    //     }
 
-        return res.status(403).json(forbiddenMessage);
-    }
+    //     return res.status(403).json(forbiddenMessage);
+    // }
 
-    @Delete('/')
-    private async deleteById(@Body() deletePost: DeepPartial<DeletePostDto>, @Res() res: Response): Promise<Response> {
-        await validateOrReject(new DeletePostDto(deletePost));
-        const isAuth = await this.jwtChecker.isAuthJWT(deletePost.accessToken);
-        if (!isAuth) {
-            return res.status(401).json(errorMessage);
-        }
+    // @Delete('/')
+    // private async deleteById(@Body() deletePost: DeepPartial<DeletePostDto>, @Res() res: Response): Promise<Response> {
+    //     await validateOrReject(new DeletePostDto(deletePost));
+    //     const isAuth = await this.jwtChecker.isAuthJWT(deletePost.accessToken);
+    //     if (!isAuth) {
+    //         return res.status(401).json(errorMessage);
+    //     }
 
-        const post = await this.postService.findOrfail(deletePost.id);
+    //     const post = await this.postService.findOrfail(deletePost.id);
 
-        const isAdmin = await this.permissionChecker.isAdmin(deletePost.user_id);
+    //     const isAdmin = await this.permissionChecker.isAdmin(deletePost.user_id);
 
-        if (isAdmin || post.author_id === deletePost.user_id) {
-            await this.postService.deletePost(deletePost.id);
-            return res.status(200).json({
-                message: 'post deleted successfully',
-            });
-        }
+    //     if (isAdmin || post.author_id === deletePost.user_id) {
+    //         await this.postService.deletePost(deletePost.id);
+    //         return res.status(200).json({
+    //             message: 'post deleted successfully',
+    //         });
+    //     }
 
-        return res.status(403).json(forbiddenMessage);
-    }
+    //     return res.status(403).json(forbiddenMessage);
+    // }
 
     @Put('/like')
     private async addLike(@Body() likePost: DeepPartial<LikePostDto>, @Res() res: Response): Promise<Response> {

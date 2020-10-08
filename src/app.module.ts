@@ -7,8 +7,8 @@ import PostModule from './posts/post.module';
 import UserModule from './users/user.module';
 import CommentModule from './comments/comment.module';
 import Post from './posts/entities/post';
-import { User } from './users/user.entitie';
-import Comment from './comments/comment.entitie';
+import { User } from './users/user.entity';
+import Comment from './comments/comment.entity';
 
 @Module({
     imports: [
